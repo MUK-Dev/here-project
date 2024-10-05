@@ -1,26 +1,27 @@
-'use client'
+'use client';
 
-import { DropdownMenuContentProps } from '@radix-ui/react-dropdown-menu'
+import { DropdownMenuContentProps } from '@radix-ui/react-dropdown-menu';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from './ui/dropdown-menu'
-import { Link2, Pencil, Trash2 } from 'lucide-react'
-import { toast } from 'sonner'
-import { useApiMutation } from '@/hooks/use-api-mutation'
-import { api } from '@/convex/_generated/api'
-import ConfirmModal from './confirm-modal'
-import { Button } from './ui/button'
-import { useRenameModal } from '@/store/use-rename-modal'
+} from './ui/dropdown-menu';
+import { Link2, Pencil, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
+import { useApiMutation } from '@/hooks/use-api-mutation';
+import { api } from '@/convex/_generated/api';
+import ConfirmModal from './confirm-modal';
+import { Button } from './ui/button';
+import { useRenameModal } from '@/store/use-rename-modal';
+import { Id } from '@/convex/_generated/dataModel';
 
 interface ActionProps {
-  children: React.ReactNode
-  side?: DropdownMenuContentProps['side']
-  sideOffset?: DropdownMenuContentProps['sideOffset']
-  id: string
-  title: string
+  children: React.ReactNode;
+  side?: DropdownMenuContentProps['side'];
+  sideOffset?: DropdownMenuContentProps['sideOffset'];
+  id: string;
+  title: string;
 }
 
 export const Actions = ({
@@ -30,22 +31,22 @@ export const Actions = ({
   id,
   title,
 }: ActionProps) => {
-  const { onOpen } = useRenameModal()
+  const { onOpen } = useRenameModal();
 
-  const { mutate, pending } = useApiMutation(api.board.remove)
+  const { mutate, pending } = useApiMutation(api.board.remove);
 
   const onCopyLink = () => {
     navigator.clipboard
       .writeText(`${window.location.origin}/board/${id}`)
       .then(() => toast.success('Link copied'))
-      .catch(() => toast.error('Failed to copy link'))
-  }
+      .catch(() => toast.error('Failed to copy link'));
+  };
 
   const onDelete = () => {
-    mutate({ id })
+    mutate({ id: id as Id<'boards'> })
       .then(() => toast.success('Board deleted'))
-      .catch(() => toast.error('Failed to delete board'))
-  }
+      .catch(() => toast.error('Failed to delete board'));
+  };
 
   return (
     <DropdownMenu>
@@ -83,5 +84,5 @@ export const Actions = ({
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
-}
+  );
+};
